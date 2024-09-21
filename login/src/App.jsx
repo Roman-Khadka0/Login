@@ -1,172 +1,164 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'; // Correct import
+import LoginSetup from './pages/LoginSetup'; // Ensure the correct path to loginSetup component
 
-const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [error, setError] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError('');
-
-    if (isLogin) {
-      if (!formData.email || !formData.password) {
-        setError('Both fields are required.');
-        return;
-      }
-      console.log('Logged in:', formData);
-    } else {
-      if (!formData.email || !formData.password || !formData.confirmPassword) {
-        setError('All fields are required.');
-        return;
-      }
-      if (formData.password !== formData.confirmPassword) {
-        setError('Passwords do not match.');
-        return;
-      }
-      console.log('Signed up:', formData);
-    }
-  };
-
-  // Inline styles
-  const styles = {
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100vh',
-      backgroundImage: 'url("https://img.freepik.com/free-vector/black-background-with-white-line-that-says-white-it_483537-4189.jpg?w=1380&t=st=1726830527~exp=1726831127~hmac=0beeff6fa14265fb3b98376b1dd6da690445e59c5c63946ad0aa0809e3e5be3c")',
-      backgroundSize: 'cover', // Ensures the image covers the entire container
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat', // Prevents tiling of the image
-      fontFamily: 'Arial, sans-serif',
-      color: 'white',
-    },
-    form: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '15px',
-      padding: '30px',
-      backgroundColor: 'rgba(34, 34, 34, 0.8)',
-      borderRadius: '10px',
-      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-      transition: 'transform 0.3s, box-shadow 0.3s',
-    },
-    formGroup: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    label: {
-      marginBottom: '5px',
-      fontWeight: 'bold',
-    },
-    input: {
-      padding: '10px',
-      border: 'none', // Removed border
-      borderRadius: '5px',
-      transition: 'border-color 0.3s',
-      backgroundColor: '#333',
-      color: 'white',
-    },
-    inputFocus: {
-      borderColor: '#007BFF',
-    },
-    button: {
-      padding: '10px',
-      backgroundColor: '#808080', // Grey color
-      color: 'white',
-      border: 'none',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      fontSize: '16px',
-      transition: 'background-color 0.3s, transform 0.2s',
-    },
-    buttonHover: {
-      backgroundColor: '#A9A9A9', // Lighter grey on hover
-    },
-    errorMessage: {
-      color: 'red',
-      marginTop: '10px',
-    },
-    toggleLink: {
-      cursor: 'pointer',
-      color: 'white',
-      marginTop: '10px',
-    },
-  };
-
+function App() {
   return (
-    <div style={styles.container}>
-      <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            style={styles.input}
-            onFocus={(e) => e.target.style.borderColor = styles.inputFocus.borderColor}
-            onBlur={(e) => e.target.style.borderColor = 'none'}
-          />
-        </div>
-        <div style={styles.formGroup}>
-          <label style={styles.label}>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            style={styles.input}
-            onFocus={(e) => e.target.style.borderColor = styles.inputFocus.borderColor}
-            onBlur={(e) => e.target.style.borderColor = 'none'}
-          />
-        </div>
-        {!isLogin && (
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Confirm Password:</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-              style={styles.input}
-              onFocus={(e) => e.target.style.borderColor = styles.inputFocus.borderColor}
-              onBlur={(e) => e.target.style.borderColor = 'none'}
-            />
+    <Router>
+      <div className="App" style={styles.app}>
+        {/* Header */}
+        <header style={styles.header}>
+          <div style={styles.logo}>
+            <h2 style={{ backgroundColor: 'white' }}>
+              <b>TutorLink</b>
+            </h2>
           </div>
-        )}
-        {error && <p style={styles.errorMessage}>{error}</p>}
-        <button
-          type="submit"
-          style={styles.button}
-          onMouseEnter={(e) => Object.assign(e.target.style, styles.buttonHover)}
-          onMouseLeave={(e) => (e.target.style.backgroundColor = '#808080')}
-        >
-          {isLogin ? 'Login' : 'Sign Up'}
-        </button>
-      </form>
-      <p style={styles.toggleLink} onClick={() => setIsLogin(!isLogin)}>
-        {isLogin ? 'Don\'t have an account? Sign up' : 'Already have an account? Login'}
-      </p>
-    </div>
+
+          <div style={styles.authButtons}>
+            {/* Use `Link` from `react-router-dom` for navigation */}
+            <Link to="/loginSetup">
+              <button style={styles.loginBtn}>Login</button>
+            </Link>
+            <button style={styles.signupBtn}>Sign Up</button>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <div style={styles.mainContent}>
+          <h1 style={styles.mainTitle}>Better Learning. Better Results.</h1>
+          <p style={styles.mainDescription}>One platform for all your learning needs</p>
+          <div style={styles.cards}>
+            <div style={styles.card}>
+              <img
+                src="https://www.shutterstock.com/image-photo/two-mature-parents-seeing-their-260nw-1458151427.jpg"
+                alt="Learning"
+                style={styles.cardImage}
+              />
+              <a style={styles.link}>Search any educational tutor</a>
+              <p style={styles.cardText}>
+                <a style={{ color: '#2baffc' }}>Let’s search what’s </a>best for you
+              </p>
+            </div>
+            <div style={styles.card}>
+              <img
+                src="https://media.istockphoto.com/id/1435632787/photo/young-smiling-modern-male-teacher-holding-laptop-isolated-on-purple-background.jpg?s=612x612&w=0&k=20&c=OsiWm3IdFEExVqWE9hn7dDy_kzxKHuJp0fvzivEl3bk="
+                alt="Teacher"
+                style={styles.cardImage}
+              />
+              <a style={styles.link}>Earn sharing what you know</a>
+              <p style={styles.cardText}>
+                <a style={{ color: '#da8ee7' }}>Share what you </a>know and earn
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer style={styles.footer}>@Copy-Right</footer>
+
+        {/* Define Routes */}
+        <Routes>
+          {/* The LoginSetup route */}
+          <Route path="/loginSetup" element={<LoginSetup />} />
+        </Routes>
+      </div>
+    </Router>
   );
+}
+
+const styles = {
+  app: {
+    textAlign: 'center',
+    fontFamily: 'Arial, sans-serif',
+    margin: 0,
+    padding: 0,
+    boxSizing: 'border-box',
+    backgroundColor: '#f4f9fd',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#f1f1f1',
+    padding: '10px 40px',
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+  },
+  logo: {
+    fontSize: '24px',
+    color: '#333',
+  },
+  authButtons: {
+    display: 'flex',
+    gap: '10px',
+  },
+  loginBtn: {
+    padding: '10px 20px',
+    border: '2px solid white',
+    color: 'white',
+    backgroundColor: 'black',
+    borderRadius: '20px',
+    cursor: 'pointer',
+    fontSize: '16px',
+  },
+  signupBtn: {
+    padding: '10px 20px',
+    backgroundColor: 'black',
+    color: 'white',
+    borderRadius: '20px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    border: 'none',
+  },
+  mainContent: {
+    marginTop: '50px',
+  },
+  mainTitle: {
+    color: '#333',
+    fontSize: '2rem',
+  },
+  mainDescription: {
+    color: '#2baffc',
+    fontSize: '2rem',
+  },
+  cards: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '20px',
+    gap: '20px',
+  },
+  card: {
+    backgroundColor: 'white',
+    padding: '20px',
+    margin: '10px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+    width: '300px',
+  },
+  cardImage: {
+    width: '100%',
+    maxHeight: '200px',
+    objectFit: 'cover',
+    borderRadius: '8px',
+  },
+  cardText: {
+    color: 'black',
+    fontSize: '2rem',
+  },
+  link: {
+    color: 'grey',
+    marginTop: '25px',
+    display: 'block',
+    fontSize: '1rem',
+  },
+  footer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'rgb(24,4,249,253)',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },
 };
 
-export default Login;
+export default App;
